@@ -21,6 +21,8 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <inttypes.h>
+#include <errno.h>
 #include <time.h>
 #include "model.h"
 #include "renderer.h"
@@ -28,11 +30,51 @@
 
 
 int
+error(const char *message)
+{
+  fprintf(stderr, "maze: %s\n", message);
+  fprintf(stderr, "usage: maze width height [ random_seed ]\n");
+  return -1;
+}
+
+
+int
 main(int argc, char *argv[])
 {
-  maze_t *maze = maze_create(30, 20);
+  maze_t *maze;
+  int random_seed;
 
-  srand(time(NULL));
+  if (argc < 3 || argc > 4) {
+    return error("Wrong number of arguments");
+  }
+
+  int width = strtoimax(argv[1], NULL, 10);
+
+  if (errno != 0 || width < 2) {
+    return error("Invalid width value");
+  }
+
+  int height = strtoimax(argv[2], NULL, 10);
+
+  if (errno != 0 || height < 2) {
+    return error("Invalid height value");
+  }
+
+  if (argc == 4) {
+    random_seed = strtoimax(argv[3], NULL, 10);
+
+    if (errno != 0) {
+      return error("Invalid random seed value");
+    }
+  }
+  else {
+    random_seed = time(NULL);
+  }
+
+  printf("Random seed is %d\n\n", random_seed);
+  srand(random_seed);
+
+  maze = maze_create(width, height);
 
   prims_maze_generate(maze);
   render_maze(maze);
