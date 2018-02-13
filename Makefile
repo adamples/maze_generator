@@ -24,6 +24,7 @@ OBJS=$(C_OBJS)
 
 all: $(BUILD_DIR)/$(TARGET)
 
+
 $(BUILD_DIR)/$(TARGET): $(OBJS)
 	$(CC) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) $(TARGET_ARCH) $^ $(LOADLIBES) $(LDLIBS) -o $@
 
