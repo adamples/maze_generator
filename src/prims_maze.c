@@ -158,6 +158,18 @@ prims_visit_cell(prims_t *prims, cell_t *cell)
 }
 
 
+static void
+prims_select_and_visit_starting_cell(prims_t *prims)
+{
+  cell_t cell;
+
+  cell.x = rand() % prims->width;
+  cell.y = rand() % prims->height;
+
+  prims_visit_cell(prims, &cell);
+}
+
+
 void
 prims_maze_generate(maze_t *maze)
 {
@@ -169,13 +181,7 @@ prims_maze_generate(maze_t *maze)
   maze_add_all_walls(prims.maze);
   bitmap_fill(prims.visited_cells, false);
 
-  wall.c1.x = 0;
-  wall.c1.y = 0;
-  wall.c2.x = 1;
-  wall.c2.y = 0;
-
-  prims_add_wall(&prims, &wall);
-  prims_cell_set_visited(&prims, &wall.c1);
+  prims_select_and_visit_starting_cell(&prims);
 
   while (prims_get_next_wall(&prims, &wall)) {
     bool c1_visited = prims_cell_was_visited(&prims, &(wall.c1));
