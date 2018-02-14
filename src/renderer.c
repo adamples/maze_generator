@@ -24,6 +24,7 @@
 #include <stdio.h>
 
 
+const char *PASSAGE = " ";
 const char *HORIZONTAL_WALL = "─";
 const char *VERTICAL_WALL = "│";
 
@@ -73,7 +74,7 @@ render_horizontal_walls(maze_t *maze, int y)
       printf("%s%s", HORIZONTAL_WALL, HORIZONTAL_WALL);
     }
     else {
-      printf("  ");
+      printf("%s%s", PASSAGE, PASSAGE);
     }
 
     render_junction(
@@ -88,7 +89,7 @@ render_horizontal_walls(maze_t *maze, int y)
     printf("%s%s", HORIZONTAL_WALL, HORIZONTAL_WALL);
   }
   else {
-    printf("  ");
+    printf("%s%s", PASSAGE, PASSAGE);
   }
 
   render_junction(
@@ -162,14 +163,14 @@ render_vertical_walls(maze_t *maze, int y)
 
   for (int x = 0; x < width - 1; ++x) {
     if (maze_has_wall_between(maze, x, y, x + 1, y)) {
-      printf("  %s", VERTICAL_WALL);
+      printf("%s%s%s", PASSAGE, PASSAGE, VERTICAL_WALL);
     }
     else {
-      printf("   ");
+      printf("%s%s%s", PASSAGE, PASSAGE, PASSAGE);
     }
   }
 
-  printf("  %s\n", VERTICAL_WALL);
+  printf("%s%s%s\n", PASSAGE, PASSAGE, VERTICAL_WALL);
 }
 
 
