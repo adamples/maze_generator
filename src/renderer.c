@@ -24,49 +24,35 @@
 #include <stdio.h>
 
 
+const char *HORIZONTAL_WALL = "─";
+const char *VERTICAL_WALL = "│";
+
+const char *WALLS_TO_JUCTION[16] = {
+  /* top right bottom left */
+  /* 0 0 0 0 */ " ",
+  /* 0 0 0 1 */ "╴",
+  /* 0 0 1 0 */ "╷",
+  /* 0 0 1 1 */ "╮",
+  /* 0 1 0 0 */ "╶",
+  /* 0 1 0 1 */ "─",
+  /* 0 1 1 0 */ "╭",
+  /* 0 1 1 1 */ "┬",
+  /* 1 0 0 0 */ "╵",
+  /* 1 0 0 1 */ "╯",
+  /* 1 0 1 0 */ "│",
+  /* 1 0 1 1 */ "┤",
+  /* 1 1 0 0 */ "╰",
+  /* 1 1 0 1 */ "┴",
+  /* 1 1 1 0 */ "├",
+  /* 1 1 1 1 */ "┼",
+};
+
+
 static void
 render_junction(bool top, bool right, bool bottom, bool left)
 {
-  int total_walls = top + right + bottom + left;
-
-  switch (total_walls) {
-    case 3:
-    case 4:
-      printf("+");
-      break;
-
-    case 2:
-      if (top && bottom) {
-        printf("|");
-      }
-      else if (left && right) {
-        printf("-");
-      }
-      else if (top) {
-        printf("'");
-      }
-      else {
-        printf(".");
-      }
-
-      break;
-
-    case 1:
-      if (top) {
-        printf("'");
-      }
-      else if (bottom) {
-        printf(".");
-      }
-      else {
-        printf("-");
-      }
-      break;
-
-    case 0:
-    default:
-      printf(" ");
-  }
+  int junction_id = (top << 3) | (right << 2) | (bottom << 1) | left;
+  printf(WALLS_TO_JUCTION[junction_id]);
 }
 
 
@@ -84,7 +70,7 @@ render_horizontal_walls(maze_t *maze, int y)
 
   for (int x = 0; x < width - 1; ++x) {
     if (maze_has_wall_between(maze, x, y, x, y + 1)) {
-      printf("--");
+      printf("%s%s", HORIZONTAL_WALL, HORIZONTAL_WALL);
     }
     else {
       printf("  ");
@@ -99,7 +85,7 @@ render_horizontal_walls(maze_t *maze, int y)
   }
 
   if (maze_has_wall_between(maze, width - 1, y, width - 1, y + 1)) {
-    printf("--");
+    printf("%s%s", HORIZONTAL_WALL, HORIZONTAL_WALL);
   }
   else {
     printf("  ");
@@ -123,7 +109,7 @@ render_top_wall(maze_t *maze)
 
   render_junction(false, true, true, false);
 
-  printf("--");
+  printf("%s%s", HORIZONTAL_WALL, HORIZONTAL_WALL);
 
   for (int x = 0; x < width - 1; ++x) {
     render_junction(
@@ -132,7 +118,7 @@ render_top_wall(maze_t *maze)
       maze_has_wall_between(maze, x, 0, x + 1, 0),
       true
     );
-    printf("--");
+    printf("%s%s", HORIZONTAL_WALL, HORIZONTAL_WALL);
   }
 
   render_junction(false, false, true, true);
@@ -149,7 +135,7 @@ render_bottom_wall(maze_t *maze)
 
   render_junction(true, true, false, false);
 
-  printf("--");
+  printf("%s%s", HORIZONTAL_WALL, HORIZONTAL_WALL);
 
   for (int x = 0; x < width - 1; ++x) {
     render_junction(
@@ -158,7 +144,7 @@ render_bottom_wall(maze_t *maze)
       false,
       true
     );
-    printf("--");
+    printf("%s%s", HORIZONTAL_WALL, HORIZONTAL_WALL);
   }
 
   render_junction(true, false, false, true);
@@ -172,18 +158,18 @@ render_vertical_walls(maze_t *maze, int y)
 {
   int width = maze_get_width(maze);
 
-  printf("|");
+  printf(VERTICAL_WALL);
 
   for (int x = 0; x < width - 1; ++x) {
     if (maze_has_wall_between(maze, x, y, x + 1, y)) {
-      printf("  |");
+      printf("  %s", VERTICAL_WALL);
     }
     else {
       printf("   ");
     }
   }
 
-  printf("  |\n");
+  printf("  %s\n", VERTICAL_WALL);
 }
 
 
