@@ -53,7 +53,7 @@ static void
 render_junction(bool top, bool right, bool bottom, bool left)
 {
   int junction_id = (top << 3) | (right << 2) | (bottom << 1) | left;
-  printf(WALLS_TO_JUCTION[junction_id]);
+  printf("%s", WALLS_TO_JUCTION[junction_id]);
 }
 
 
@@ -159,7 +159,7 @@ render_vertical_walls(maze_t *maze, int y)
 {
   int width = maze_get_width(maze);
 
-  printf(VERTICAL_WALL);
+  printf("%s", VERTICAL_WALL);
 
   for (int x = 0; x < width - 1; ++x) {
     if (maze_has_wall_between(maze, x, y, x + 1, y)) {
